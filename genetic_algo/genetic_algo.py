@@ -1,6 +1,6 @@
 import string, random
 import operator
-goal = 'abcdefghijklmnopqrstuvwxyz'
+goal = 'abcdefghijklmnopqrstuvwxyzaaaaaaaaadsafasdfasdaaaa'
 
 
 class indiv:
@@ -17,24 +17,28 @@ class group:
 	def fitness(self):
 		for indivdual in self.list:
 			i = 0
+			score_ = 0
 			indivdual.score = 0
 			for letter in indivdual.str:
 				if (letter == goal[i]):
-					indivdual.score+=1
+					score_+=1
 				i+=1
+			indivdual.score = pow(2,int(score_))
+			#print('score', score_, 'str = ',indivdual.str)
+
+
 	def overcross(self):
 		self.fitness()
 		self.list = sorted(self.list, key=lambda indiv: indiv.score, reverse = True)
 		print(self.list[0].str)
 		newlist = []
-		for i in range(4500):
-			index1 = random.randrange(1, 50)
-			index2 = random.randrange(1, 50)
+		for i in range(8000):
+			index1 = random.randrange(1, 100)
+			index2 = random.randrange(1, 100)
 			parent1 = self.list[index1].str
 			parent2 = self.list[index2].str
 			newstr = ''
-			
-			
+
 			for letter in range(len(goal)):
 				seed = random.randrange(0, 50)
 				if(seed < 23):
@@ -43,13 +47,16 @@ class group:
 					newstr = newstr + parent2[letter]
 				else:
 					newstr = newstr + randomString(1) #getting random letter
+
 			if(newstr == goal):
 				self.finish = 1
 				print(newstr)
 				break
 			newlist.append(indiv(newstr,0))
-		for i in range(500):
+
+		for i in range(2000):
 			newlist.append(self.list[i])
+
 		self.fitness()
 		self.list = newlist
 		self.generation+=1
@@ -61,7 +68,7 @@ def randomString(stringLength):
 
 creature = group(0,0)
 
-for i in range(5000):
+for i in range(10000):
 	new_str = randomString(len(goal))
 	creature.list.append(indiv(new_str,0))
 
