@@ -1,6 +1,6 @@
 import string, random
 import operator
-goal = 'abcdefghijklmnopqrstuvwxyzaaaaauyroqiwueyroiuqyeokfj'
+goal = 'abcdefghijklmnopqrstuvwxyz'
 
 
 class indiv:
@@ -9,7 +9,6 @@ class indiv:
 		self.score = 0
 
 class group:
-	"""docstring for group"""
 	def __init__(self, mutation, generation):
 		self.mutation = 20
 		self.generation = 0
@@ -22,19 +21,15 @@ class group:
 			for letter in indivdual.str:
 				if (letter == goal[i]):
 					indivdual.score+=1
-					#print(indivdual.str)
 				i+=1
 	def overcross(self):
 		self.fitness()
 		self.list = sorted(self.list, key=lambda indiv: indiv.score, reverse = True)
 		print(self.list[0].str)
-		#for i in self.list:
-		#	print('str',i.str,' score = ',i.score)
-		##print(self.generation,':')
 		newlist = []
-		for i in range(2000):
-			index1 = random.randrange(1, 100)
-			index2 = random.randrange(1, 100)
+		for i in range(4500):
+			index1 = random.randrange(1, 50)
+			index2 = random.randrange(1, 50)
 			parent1 = self.list[index1].str
 			parent2 = self.list[index2].str
 			newstr = ''
@@ -42,21 +37,18 @@ class group:
 			
 			for letter in range(len(goal)):
 				seed = random.randrange(0, 50)
-				if(seed < 8):
+				if(seed < 23):
 					newstr = newstr + parent1[letter]
-				elif(seed >= 8 & seed <= 15):
+				elif(seed >= 23 & seed <= 43):
 					newstr = newstr + parent2[letter]
 				else:
-					newstr = newstr + randomString(1)
-					#print(newstr)
-			#print('newstr = ',newstr)
+					newstr = newstr + randomString(1) #getting random letter
 			if(newstr == goal):
 				self.finish = 1
 				print(newstr)
 				break
-			##print(newstr,', ')
 			newlist.append(indiv(newstr,0))
-		for i in range(3000):
+		for i in range(500):
 			newlist.append(self.list[i])
 		self.fitness()
 		self.list = newlist
@@ -75,6 +67,8 @@ for i in range(5000):
 
 while creature.finish == 0:
 	creature.overcross()
+
+print(creature.generation,'generations')
 
 			
 
